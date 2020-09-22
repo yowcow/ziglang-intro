@@ -2,6 +2,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const mem = std.mem;
 
+const Point = @import("structs.zig").Point;
+
 test "simple arithmetic op" {
     const x = 1 + 2 * 3;
     assert(7 == x);
@@ -55,31 +57,26 @@ fn addI32(a: i32, b: i32) i32 {
 //    return "hehoge";
 //}
 
-const Point = struct {
-    x: i32,
-    y: i32,
-
-    pub fn init(x: i32, y: i32) Point {
-        return Point{
-            .x = x,
-            .y = y,
-        };
-    }
-
-    pub fn double(self: *const Point) Point {
-        return Point{
-            .x = self.x * 2,
-            .y = self.y * 2,
-        };
-    }
-};
-
 test "struct with methods" {
+    const z = Point{};
+    assert(10 == z.x);
+    assert(20 == z.y);
+
     const p = Point.init(1, 2);
     assert(1 == p.x);
     assert(2 == p.y);
 
-    const p2 = p.double();
-    assert(2 == p2.x);
-    assert(4 == p2.y);
+    var p2 = p.double();
+    var p3 = p2.double();
+    assert(4 == p3.x);
+    assert(8 == p3.y);
+
+    p3.x = 1;
+    p3.y = 2;
+    assert(1 == p.x);
+    assert(2 == p.y);
+
+    _ = p3.doubleUpdate();
+    assert(p3.x == 2);
+    assert(p3.y == 4);
 }

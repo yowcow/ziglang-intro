@@ -5,6 +5,6 @@ pub fn main() !void {
     try printWriter(std.io.getStdErr(), "STDERR");
 }
 
-fn printWriter(f: std.fs.File, name: [:0]const u8) !void {
+fn printWriter(f: std.fs.File, name: []const u8) !void {
     try f.writer().print("Hello, {}!\n", .{name});
 }
